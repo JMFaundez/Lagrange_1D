@@ -1,6 +1,3 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 def basis(i,m,xi,x):
     if m==len(xi):
         return 1
@@ -26,7 +23,16 @@ def dbasis(i,m,j,xi,x,value):
         else:
             return (x-xi[m])/(xi[i]-xi[m])*dbasis(i,m-1,j,xi,x,value)
 
-def lagrange(xi,x):
+def lagrange1d(xi,x):
+    '''
+    INPUT
+    xi: quadrature
+    x: points to be evaluated
+
+    OUPUT:
+    phi: Vector containing the value of the basis function at x
+    dphi: Vector containing the value of the derivatives at x
+    '''
     N = len(xi)
     phi = []
     dphi = []
@@ -35,25 +41,3 @@ def lagrange(xi,x):
         dphi.append(dbasis(i,len(xi),0,xi,x,0))
     return phi, dphi
 
-
-GLL = 10
-N = 8
-xi,w  = np.polynomial.legendre.leggauss(GLL)
-x = np.linspace(-1, 1, N)
-f = np.sin(xi**2)
-der = np.cos(x**2)*2*x
-phi, dphi = lagrange(xi,x)
-dphi = np.array(dphi)
-der_ap = f@dphi
-
-plt.figure()
-for i in range(GLL):
-    plt.plot(x,phi[i], label=r'$\phi_{%i}$' %(i+1))
-plt.legend()
-plt.show()
-
-plt.figure()
-plt.plot(x,der,label='Analytical Derivative')
-plt.plot(x,der_ap,'--',label='Interpolation')
-plt.legend()
-plt.show()
