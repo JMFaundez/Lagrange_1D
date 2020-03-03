@@ -38,6 +38,18 @@ def lagrange1d(xi,x):
     dphi = []
     for i in range(N):
         phi.append(basis(i,0,xi,x))
-        dphi.append(dbasis(i,len(xi),0,xi,x,0))
+        dphi.append(dbasis(i,N,0,xi,x,0))
     return phi, dphi
 
+def lagrange2d(xi,eta,x,y):
+    N = len(xi)
+    p = N - 1
+    phi = []
+    dphi_xi = []
+    dphi_eta = []
+    for s in range(N):
+        for r in range(N):
+            phi.append(basis(r,0,xi,x)*basis(s,0,eta,y))
+            dphi_xi.append(dbasis(r,N,0,xi,x,0)*basis(s,0,eta,y))
+            dphi_eta.append(basis(r,0,xi,x)*dbasis(s,N,0,eta,y,0))
+    return phi, dphi_xi, dphi_eta
